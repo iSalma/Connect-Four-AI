@@ -198,40 +198,40 @@ def winner(board, columns, rows, connect4):
         for y in range(columns):
             if y + 3 < columns:
                 if board[x][y] == 'C' and board[x][y + 1] == 'C' and board[x][y + 2] == 'C' and board[x][y + 3] == 'C':
-                    #print("Computer won horizontal")
+                    
                     return True
                 if board[x][y] == 'P' and board[x][y + 1] == 'P' and board[x][y + 2] == 'P' and board[x][y + 3] == 'P':
-                    #print("Player won horizontal")
+
                     return True
 
     for x in range(rows):
         for y in range(columns):
             if x + 3 < rows:
                 if board[x][y] == 'C' and board[x + 1][y] == 'C' and board[x + 2][y] == 'C' and board[x + 3][y] == 'C':
-                    #print("Computer won vertical")
+
                     return True
                 if board[x][y] == 'P' and board[x + 1][y] == 'P' and board[x + 2][y] == 'P' and board[x + 3][y] == 'P':
-                    #print("Player won vertical")
+
                     return True
 
     for x in range(rows):
         for y in range(columns):
             if x + 3 < rows and y - 3 >= 0:
                 if board[x][y] == 'C' and board[x + 1][y - 1] == 'C' and board[x + 2][y - 2] == 'C' and board[x + 3][y - 3] == 'C':
-                    #print("Computer won with up horizontal")
+
                     return True
                 if board[x][y] == 'P' and board[x + 1][y - 1] == 'P' and board[x + 2][y - 2] == 'P' and board[x + 3][y - 3] == 'P':
-                    #print("Player won with up horizontal")
+
                     return True
 
     for x in range(rows):
         for y in range(columns):
             if y + 3 < columns and x + 3 < rows:
                 if board[x][y] == 'C' and board[x + 1][y + 1] == 'C' and board[x + 2][y + 2] == 'C' and board[x + 3][y + 3] == 'C':
-                    #print("Computer won with down horizontal")
+
                     return True
                 if board[x][y] == 'P' and board[x + 1][y + 1] == 'P' and board[x + 2][y + 2] == 'P' and  board[x + 3][y + 3] == 'P':
-                    #print("Player won with down horizontal")
+
                     return True
     return False
 

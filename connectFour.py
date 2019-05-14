@@ -13,7 +13,7 @@ def main():
             print("Enter difficulty level(depth) less than 10\nEnter new number")
             depth = int(input())
 
-        board = [['0' for y in range(columns)] for x in range(rows)]
+        board = [['0' for c in range(columns)] for r in range(rows)]
         print("Who plays first? Enter 1 for Computer or 2 for Player")
         Turn = int(input())
 
@@ -85,16 +85,16 @@ def moves(board, computerTurn, columns, rows, movesarray):
 
 def printboard(board, columns, rows):
     print(" 1 | 2 | 3 | 4 | 5 | 6 | 7 |\n")
-    for x in range(rows):
-        for y in range(columns):
-            print(' %s |' % board[x][y], end='')
+    for r in range(rows):
+        for c in range(columns):
+            print(' %s |' % board[r][c], end='')
         print("\n")
     print(" 1 | 2 | 3 | 4 | 5 | 6 | 7 |\n")
 
 def isfull(board, columns, rows):
-    for x in range(rows):
-        for y in range(columns):
-            if board[x][y] == '0':
+    for r in range(rows):
+        for c in range(columns):
+            if board[r][c] == '0':
                 return False
     return True
 
@@ -194,43 +194,43 @@ def minvalue(board, computerTurn, columns, rows, connect4, table, alpha, beta, d
 
 
 def winner(board, columns, rows, connect4):
-    for x in range(rows):
-        for y in range(columns):
-            if y + 3 < columns:
-                if board[x][y] == 'C' and board[x][y + 1] == 'C' and board[x][y + 2] == 'C' and board[x][y + 3] == 'C':
-                    
-                    return True
-                if board[x][y] == 'P' and board[x][y + 1] == 'P' and board[x][y + 2] == 'P' and board[x][y + 3] == 'P':
+    for r in range(rows):
+        for c in range(columns):
+            if c + 3 < columns:
+                if board[r][c] == 'C' and board[r][c + 1] == 'C' and board[r][c + 2] == 'C' and board[r][c + 3] == 'C':
 
                     return True
-
-    for x in range(rows):
-        for y in range(columns):
-            if x + 3 < rows:
-                if board[x][y] == 'C' and board[x + 1][y] == 'C' and board[x + 2][y] == 'C' and board[x + 3][y] == 'C':
-
-                    return True
-                if board[x][y] == 'P' and board[x + 1][y] == 'P' and board[x + 2][y] == 'P' and board[x + 3][y] == 'P':
+                if board[r][c] == 'P' and board[r][c + 1] == 'P' and board[r][c + 2] == 'P' and board[r][c + 3] == 'P':
 
                     return True
 
-    for x in range(rows):
-        for y in range(columns):
-            if x + 3 < rows and y - 3 >= 0:
-                if board[x][y] == 'C' and board[x + 1][y - 1] == 'C' and board[x + 2][y - 2] == 'C' and board[x + 3][y - 3] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if r + 3 < rows:
+                if board[r][c] == 'C' and board[r + 1][c] == 'C' and board[r + 2][c] == 'C' and board[r + 3][c] == 'C':
 
                     return True
-                if board[x][y] == 'P' and board[x + 1][y - 1] == 'P' and board[x + 2][y - 2] == 'P' and board[x + 3][y - 3] == 'P':
+                if board[r][c] == 'P' and board[r + 1][c] == 'P' and board[r + 2][c] == 'P' and board[r + 3][c] == 'P':
 
                     return True
 
-    for x in range(rows):
-        for y in range(columns):
-            if y + 3 < columns and x + 3 < rows:
-                if board[x][y] == 'C' and board[x + 1][y + 1] == 'C' and board[x + 2][y + 2] == 'C' and board[x + 3][y + 3] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if r + 3 < rows and c - 3 >= 0:
+                if board[r][c] == 'C' and board[r + 1][c - 1] == 'C' and board[r + 2][c - 2] == 'C' and board[r + 3][c - 3] == 'C':
 
                     return True
-                if board[x][y] == 'P' and board[x + 1][y + 1] == 'P' and board[x + 2][y + 2] == 'P' and  board[x + 3][y + 3] == 'P':
+                if board[r][c] == 'P' and board[r + 1][c - 1] == 'P' and board[r + 2][c - 2] == 'P' and board[r + 3][c - 3] == 'P':
+
+                    return True
+
+    for r in range(rows):
+        for c in range(columns):
+            if c + 3 < columns and r + 3 < rows:
+                if board[r][c] == 'C' and board[r + 1][c + 1] == 'C' and board[r + 2][c + 2] == 'C' and board[r + 3][c + 3] == 'C':
+
+                    return True
+                if board[r][c] == 'P' and board[r + 1][c + 1] == 'P' and board[r + 2][c + 2] == 'P' and  board[r + 3][c + 3] == 'P':
 
                     return True
     return False
@@ -238,72 +238,76 @@ def winner(board, columns, rows, connect4):
 
 def cost(board, columns, rows):
     num= 0
-    for x in range(rows):
-        for y in range(columns):
-            if y + 1 < columns:
-                if board[x][y] == 'C' and board[x][y + 1] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if c + 1 < columns:
+                if board[r][c] == 'C' and board[r][c + 1] == 'C':
                     num= num+ 3
-                if board[x][y] == 'P' and board[x][y + 1] == 'P':
+                if board[r][c] == 'P' and board[r][c + 1] == 'P':
                     num= num- 3
 
-    for x in range(rows):
-        for y in range(columns):
-            if x + 1 < rows:
-                if board[x][y] == 'C' and board[x + 1][y] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if r + 1 < rows:
+                if board[r][c] == 'C' and board[r + 1][c] == 'C':
                     num= num+ 3
-                if board[x][y] == 'P' and board[x + 1][y] == 'P':
+                if board[r][c] == 'P' and board[r + 1][c] == 'P':
                     num= num- 3
 
-    for x in range(rows):
-        for y in range(columns):
-            if x + 1 < rows and y - 1 >= 0:
-                if board[x][y] == 'C' and board[x + 1][y - 1] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if r + 1 < rows and c - 1 >= 0:
+                if board[r][c] == 'C' and board[r + 1][c - 1] == 'C':
                     num= num+ 3
-                if board[x][y] == 'P' and board[x + 1][y - 1] == 'P':
+                if board[r][c] == 'P' and board[r + 1][c - 1] == 'P':
                     num= num- 3
-    for x in range(rows):
-        for y in range(columns):
-            if y + 1 < columns and x + 1 < rows:
+    for r in range(rows):
+        for c in range(columns):
+            if c + 1 < columns and r + 1 < rows:
 
-                if board[x][y] == 'C' and board[x + 1][y + 1] == 'C':
+                if board[r][c] == 'C' and board[r + 1][c + 1] == 'C':
                     num= num+ 3
-                if board[x][y] == 'P' and board[x + 1][y + 1] == 'P':
+                if board[r][c] == 'P' and board[r + 1][c + 1] == 'P':
                     num= num- 3
-    for x in range(rows):
-        for y in range(columns):
-            if y + 2 < columns:
-                if board[x][y] == 'C' and board[x][y + 1] == 'C' and board[x][y + 2] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if c + 2 < columns:
+                if board[r][c] == 'C' and board[r][c + 1] == 'C' and board[r][c + 2] == 'C':
                     num= num+ 10
-                if board[x][y] == 'P' and board[x][y + 1] == 'P' and board[x][y + 2] == 'P':
+                if board[r][c] == 'P' and board[r][c + 1] == 'P' and board[r][c + 2] == 'P':
                     num= num- 10
 
-    for x in range(rows):
-        for y in range(columns):
-            if x + 2 < rows:
-                if board[x][y] == 'C' and board[x + 1][y] == 'C' and board[x + 2][y] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if r + 2 < rows:
+                if board[r][c] == 'C' and board[r + 1][c] == 'C' and board[r + 2][c] == 'C':
                     num= num+ 10
-                if board[x][y] == 'P' and board[x + 1][y] == 'P' and board[x + 2][y] == 'P':
+                if board[r][c] == 'P' and board[r + 1][c] == 'P' and board[r + 2][c] == 'P':
                     num= num- 10
 
-    for x in range(rows):
-        for y in range(columns):
-            if x + 2 < rows and y - 2 >= 0:
-                if board[x][y] == 'C' and board[x + 1][y - 1] == 'C' and board[x + 2][y - 2] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if r + 2 < rows and c - 2 >= 0:
+                if board[r][c] == 'C' and board[r + 1][c - 1] == 'C' and board[r + 2][c - 2] == 'C':
                     num= num+ 10
-                if board[x][y] == 'P' and board[x + 1][y - 1] == 'P' and board[x + 2][y - 2] == 'P':
+                if board[r][c] == 'P' and board[r + 1][c - 1] == 'P' and board[r + 2][c - 2] == 'P':
                     num= num- 10
-    for x in range(rows):
-        for y in range(columns):
-            if y + 2 < columns and x + 2 < rows:
-                if board[x][y] == 'C' and board[x + 1][y + 1] == 'C' and board[x + 2][y + 2] == 'C':
+    for r in range(rows):
+        for c in range(columns):
+            if c + 2 < columns and r + 2 < rows:
+                if board[r][c] == 'C' and board[r + 1][c + 1] == 'C' and board[r + 2][c + 2] == 'C':
                     num= num+ 10
-                if board[x][y] == 'P' and board[x + 1][y + 1] == 'P' and board[x + 2][y + 2] == 'P':
+                if board[r][c] == 'P' and board[r + 1][c + 1] == 'P' and board[r + 2][c + 2] == 'P':
                     num= num- 10
 
     return num
 
 
 main()
+
+
+
+
 
 
 

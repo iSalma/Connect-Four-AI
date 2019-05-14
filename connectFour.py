@@ -1,6 +1,4 @@
-import sys
 import copy
-
 
 def main():
     columns = 7
@@ -32,7 +30,7 @@ def main():
             table = {}
             alphabeta(board, not computerTurn, columns, rows, connect4, table, depth)
             movesarray = []
-            getmoves(board, not computerTurn, columns, rows, movesarray)
+            moves(board, not computerTurn, columns, rows, movesarray)
             maxmove = -100000000000
             for item in movesarray:
                 x = str(item)
@@ -47,7 +45,7 @@ def main():
                 printboard(board, columns, rows)
 
             else:
-                insertcoin(board, computerTurn, columns, rows)
+                addcoin(board, computerTurn, columns, rows)
 
             computerTurn = not computerTurn
             if winner(board, columns, rows, connect4) is True or isfull(board, columns, rows) is True:
@@ -57,74 +55,7 @@ def main():
                     again = True
                 else:
                     again = False
-
-def alphabeta(board, computerTurn, columns, rows, connect4, table, depth):
-    if str(board) in table:
-        return table[str(board)]
-    score = maxvalue(board, computerTurn, columns, rows, connect4, table, -100000000, 100000000, depth)
-    return score
-
-def maxvalue(board, computerTurn, columns, rows, connect4, table, alpha, beta, depth):
-    if str(board) in table:
-        return table[str(board)]
-    if winner(board, columns, rows, connect4) is True and computerTurn == True:
-        table[str(board)] = 10000
-        return 10000
-    elif winner(board, columns, rows, connect4) is True and computerTurn == False:
-        table[str(board)] = -10000
-        return -10000
-    elif isfull(board, columns, rows) is True:
-        table[str(board)] = 0
-        return 0
-    elif depth == 0:
-        table[str(board)] = cost(board, columns, rows)
-        return cost(board, columns, rows)
-
-    score = -100000000
-    movesarray = []
-    getmoves(board, computerTurn, columns, rows, movesarray)
-
-    for item in movesarray:
-        score = max(score, minvalue(item, not computerTurn, columns, rows, connect4, table, alpha, beta, depth - 1))
-        if score >= beta:
-            table[str(board)] = score
-            return score
-    a = max(alpha, score)
-    table[str(board)] = score
-    return score
-
-
-def minvalue(board, computerTurn, columns, rows, connect4, table, alpha, beta, depth):
-    if str(board) in table:
-        return table[str(board)]
-    if winner(board, columns, rows, connect4) is True and computerTurn == True:
-        table[str(board)] = 10000
-        return 10000
-    elif winner(board, columns, rows, connect4) is True and computerTurn == False:
-        table[str(board)] = -10000
-        return -10000
-    elif isfull(board, columns, rows) is True:
-        table[str(board)] = 0
-        return 0
-    elif depth == 0:
-        table[str(board)] = cost(board, columns, rows)
-        return cost(board, columns, rows)
-    score = 100000000
-    movesarray = []
-    getmoves(board, computerTurn, columns, rows, movesarray)
-
-    for item in movesarray:
-        score = min(score, maxvalue(item, not computerTurn, columns, rows, connect4, table, alpha, beta, depth - 1))
-        if score <= alpha:
-
-            return score
-
-        beta = min(beta, score)
-    table[str(board)] = score
-    return score
-
-
-def getmoves(board, computerTurn, columns, rows, movesarray):
+def moves(board, computerTurn, columns, rows, movesarray):
     if computerTurn == True:
         for columnchoice in range(columns):
             state = copy.deepcopy(board)
@@ -160,13 +91,20 @@ def printboard(board, columns, rows):
         print("\n")
     print(" 1 | 2 | 3 | 4 | 5 | 6 | 7 |\n")
 
+def isfull(board, columns, rows):
+    for x in range(rows):
+        for y in range(columns):
+            if board[x][y] == '0':
+                return False
+    return True
 
-def insertcoin(board, computerTurn, columns, rows):
+
+def addcoin(board, computerTurn, columns, rows):
     if computerTurn == True:
         print("In which column would computer like to insert coin?")
         columnchoice = int(input())
         while board[0][columnchoice - 1] == 'C' or board[0][columnchoice - 1] == 'P':
-            print("Can't put coin there. Enter new input: ")
+            print("Can't put coin there. Enter new column: ")
             columnchoice = int(input())
         i = rows - 1
         while (board[i][columnchoice - 1] == 'C' or board[i][columnchoice - 1] == 'P'):
@@ -176,11 +114,11 @@ def insertcoin(board, computerTurn, columns, rows):
         print("In which column would player like to insert coin?")
         columnchoice = int(input())
         while (columnchoice < 1 or columnchoice > columns):
-            print("Can't put coin there. Enter new input: ")
+            print("Can't put coin there. Enter new column: ")
             columnchoice = int(input())
 
         while board[0][columnchoice - 1] == 'C' or board[0][columnchoice - 1] == 'P':
-            print("Can't put coin there. Enter new input: ")
+            print("Can't put coin there. Enter new column: ")
             columnchoice = int(input())
         i = rows - 1
         while (board[i][columnchoice - 1] == 'C' or board[i][columnchoice - 1] == 'P'):
@@ -188,12 +126,71 @@ def insertcoin(board, computerTurn, columns, rows):
         board[i][columnchoice - 1] = 'P'
 
 
-def isfull(board, columns, rows):
-    for x in range(rows):
-        for y in range(columns):
-            if board[x][y] == '0':
-                return False
-    return True
+
+def alphabeta(board, computerTurn, columns, rows, connect4, table, depth):
+    if str(board) in table:
+        return table[str(board)]
+    score = maxvalue(board, computerTurn, columns, rows, connect4, table, -100000000, 100000000, depth)
+    return score
+
+def maxvalue(board, computerTurn, columns, rows, connect4, table, alpha, beta, depth):
+    if str(board) in table:
+        return table[str(board)]
+    if winner(board, columns, rows, connect4) is True and computerTurn == True:
+        table[str(board)] = 10000
+        return 10000
+    elif winner(board, columns, rows, connect4) is True and computerTurn == False:
+        table[str(board)] = -10000
+        return -10000
+    elif isfull(board, columns, rows) is True:
+        table[str(board)] = 0
+        return 0
+    elif depth == 0:
+        table[str(board)] = cost(board, columns, rows)
+        return cost(board, columns, rows)
+
+    score = -100000000
+    movesarray = []
+    moves(board, computerTurn, columns, rows, movesarray)
+
+    for item in movesarray:
+        score = max(score, minvalue(item, not computerTurn, columns, rows, connect4, table, alpha, beta, depth - 1))
+        if score >= beta:
+            table[str(board)] = score
+            return score
+    a = max(alpha, score)
+    table[str(board)] = score
+    return score
+
+
+def minvalue(board, computerTurn, columns, rows, connect4, table, alpha, beta, depth):
+    if str(board) in table:
+        return table[str(board)]
+    if winner(board, columns, rows, connect4) is True and computerTurn == True:
+        table[str(board)] = 10000
+        return 10000
+    elif winner(board, columns, rows, connect4) is True and computerTurn == False:
+        table[str(board)] = -10000
+        return -10000
+    elif isfull(board, columns, rows) is True:
+        table[str(board)] = 0
+        return 0
+    elif depth == 0:
+        table[str(board)] = cost(board, columns, rows)
+        return cost(board, columns, rows)
+    score = 100000000
+    movesarray = []
+    moves(board, computerTurn, columns, rows, movesarray)
+
+    for item in movesarray:
+        score = min(score, maxvalue(item, not computerTurn, columns, rows, connect4, table, alpha, beta, depth - 1))
+        if score <= alpha:
+
+            return score
+
+        beta = min(beta, score)
+    table[str(board)] = score
+    return score
 
 
 def winner(board, columns, rows, connect4):
@@ -240,70 +237,70 @@ def winner(board, columns, rows, connect4):
 
 
 def cost(board, columns, rows):
-    z = 0
+    num= 0
     for x in range(rows):
         for y in range(columns):
             if y + 1 < columns:
                 if board[x][y] == 'C' and board[x][y + 1] == 'C':
-                    z = z + 3
+                    num= num+ 3
                 if board[x][y] == 'P' and board[x][y + 1] == 'P':
-                    z = z - 3
+                    num= num- 3
 
     for x in range(rows):
         for y in range(columns):
             if x + 1 < rows:
                 if board[x][y] == 'C' and board[x + 1][y] == 'C':
-                    z = z + 3
+                    num= num+ 3
                 if board[x][y] == 'P' and board[x + 1][y] == 'P':
-                    z = z - 3
+                    num= num- 3
 
     for x in range(rows):
         for y in range(columns):
             if x + 1 < rows and y - 1 >= 0:
                 if board[x][y] == 'C' and board[x + 1][y - 1] == 'C':
-                    z = z + 3
+                    num= num+ 3
                 if board[x][y] == 'P' and board[x + 1][y - 1] == 'P':
-                    z = z - 3
+                    num= num- 3
     for x in range(rows):
         for y in range(columns):
             if y + 1 < columns and x + 1 < rows:
 
                 if board[x][y] == 'C' and board[x + 1][y + 1] == 'C':
-                    z = z + 3
+                    num= num+ 3
                 if board[x][y] == 'P' and board[x + 1][y + 1] == 'P':
-                    z = z - 3
+                    num= num- 3
     for x in range(rows):
         for y in range(columns):
             if y + 2 < columns:
                 if board[x][y] == 'C' and board[x][y + 1] == 'C' and board[x][y + 2] == 'C':
-                    z = z + 10
+                    num= num+ 10
                 if board[x][y] == 'P' and board[x][y + 1] == 'P' and board[x][y + 2] == 'P':
-                    z = z - 10
+                    num= num- 10
 
     for x in range(rows):
         for y in range(columns):
             if x + 2 < rows:
                 if board[x][y] == 'C' and board[x + 1][y] == 'C' and board[x + 2][y] == 'C':
-                    z = z + 10
+                    num= num+ 10
                 if board[x][y] == 'P' and board[x + 1][y] == 'P' and board[x + 2][y] == 'P':
-                    z = z - 10
+                    num= num- 10
 
     for x in range(rows):
         for y in range(columns):
             if x + 2 < rows and y - 2 >= 0:
                 if board[x][y] == 'C' and board[x + 1][y - 1] == 'C' and board[x + 2][y - 2] == 'C':
-                    z = z + 10
+                    num= num+ 10
                 if board[x][y] == 'P' and board[x + 1][y - 1] == 'P' and board[x + 2][y - 2] == 'P':
-                    z = z - 10
+                    num= num- 10
     for x in range(rows):
         for y in range(columns):
             if y + 2 < columns and x + 2 < rows:
                 if board[x][y] == 'C' and board[x + 1][y + 1] == 'C' and board[x + 2][y + 2] == 'C':
-                    z = z + 10
+                    num= num+ 10
                 if board[x][y] == 'P' and board[x + 1][y + 1] == 'P' and board[x + 2][y + 2] == 'P':
-                    z = z - 10
+                    num= num- 10
 
-    return z
+    return num
 
 
 main()
